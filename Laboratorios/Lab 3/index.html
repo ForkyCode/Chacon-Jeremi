@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <h1 class="titulo">Laboratorio 3</h1>
+
+    <section class="container-box">
+
+        <div>
+            <h1>Problema 1:</h1>
+            <div class="box">
+                <h3>Verificar Palíndromo de Doble Base</h3>
+                <label for="numeroInput">Ingrese un número:</label>
+                <input type="text" id="numeroInput">
+                <button id="verificarBtn">Verificar</button>
+                <p id="resultadopalindromo"></p>
+            </div>
+        </div>
+        
+    
+        <div>
+            <h1>Problema 2:</h1>
+            <div class="box">
+                <h3>Contador de Caracteres</h3>
+                <label for="cadenaInput">Ingrese una cadena:</label>
+                <input type="text" id="cadenaInput">
+                <button onclick="mostrarResultado()">Contar Caracteres</button>
+                <div id="resultadoletras"></div>
+            </div>
+        </div>
+    
+        <div>
+            <h1>Problema 3:</h1>
+            <div class="box">
+                <h3>Verificador de Año Bisiesto</h3>
+                <label for="añoInput">Ingrese un año:</label>
+                <input type="number" id="añoInput">
+                <button onclick="verificarBisiesto()">Verificar</button>
+                <p id="resultadoaño"></p>
+            </div>
+        </div>
+    
+        <div>
+            <h1>Problema 4:</h1>
+            <div class="box">
+                <h3>Suma de Números Primos</h3>
+                <label for="numeroIn">Ingrese un número:</label>
+                <input type="number" id="numeroIn">
+                <button onclick="calcularSumatoria()">Calcular Sumatoria</button>
+                <p id="resultadoprimos"></p>
+
+            </div>
+        </div>
+    </section>
+    
+    <script src="script.js">
+
+    </script>
+</body>
+</html>
