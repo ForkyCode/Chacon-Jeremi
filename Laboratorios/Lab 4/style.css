@@ -1,4 +1,94 @@
-<<<<<<< HEAD
+ /* Mobile first */
+body{
+    font-family: "Roboto", sans-serif;
+    padding: 1rem;
+}
+
+p, h1, h2, h3, h4, h5, h6{
+    margin: 20px;
+
+}
+
+/* Estilo de las tarjetas basado en documentacion del prof */
+    .card {
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        transition: 0.3s;
+        width: 40px;
+        text-align: center;
+        margin: 10px;
+        cursor: pointer;
+        display: inline-block;
+        border-radius:0px;
+        padding: 15px;
+        background-color: whitesmoke;
+    }
+
+    .card:hover {
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    }
+
+    .container {
+        padding: 2px 16px;
+    }
+
+    #num {
+        width: 50px;
+    }
+
+    #fibForm {
+         margin-bottom: 20px;
+        
+    }
+
+.custom-input {
+    width: 10px;
+    height: 20px;
+    border: 0px solid white;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 16px;
+}
+
+/* Estilo del botón de calcular */
+#calculateButton {
+    background-color: maroon;
+    color: whitesmoke;
+    border: none;
+    border-radius: 0;
+    padding: 5px 70px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    box-shadow: 0px 4px 14px 0px rgba(0,0,0,0.30);
+}
+
+.padre {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+/* Para mis Div */
+.container-box{
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.box{
+    width: 100%;
+    background-color: whitesmoke;
+    min-height: 200px;
+    border-radius: 8px;
+    -webkit-box-shadow: 0px 4px 14px 0px rgba(0,0,0,0.30);
+    -moz-box-shadow: 0px 4px 14px 0px rgba(0,0,0,0.30);
+    box-shadow: 0px 4px 14px 0px rgba(0,0,0,0.30);
+    padding: 1rem;
+
 
  /* Mobile first */
 body{
@@ -90,97 +180,4 @@ p, h1, h2, h3, h4, h5, h6{
     -moz-box-shadow: 0px 4px 14px 0px rgba(0,0,0,0.30);
     box-shadow: 0px 4px 14px 0px rgba(0,0,0,0.30);
     padding: 1rem;
-=======
-
- /* Mobile first */
-body{
-    font-family: "Roboto", sans-serif;
-    padding: 1rem;
-}
-
-p, h1, h2, h3, h4, h5, h6{
-    margin: 20px;
-
-}
-
-/* Estilo de las tarjetas basado en documentacion del prof */
-    .card {
-        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-        transition: 0.3s;
-        width: 40px;
-        text-align: center;
-        margin: 10px;
-        cursor: pointer;
-        display: inline-block;
-        border-radius:0px;
-        padding: 15px;
-        background-color: whitesmoke;
-    }
-
-    .card:hover {
-        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-    }
-
-    .container {
-        padding: 2px 16px;
-    }
-
-    #num {
-        width: 50px;
-    }
-
-    #fibForm {
-         margin-bottom: 20px;
-        
-    }
-
-.custom-input {
-    width: 10px;
-    height: 20px;
-    border: 0px solid white;
-    border-radius: 5px;
-    padding: 10px;
-    font-size: 16px;
-}
-
-/* Estilo del botón de calcular */
-#calculateButton {
-    background-color: maroon;
-    color: whitesmoke;
-    border: none;
-    border-radius: 0;
-    padding: 5px 70px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    box-shadow: 0px 4px 14px 0px rgba(0,0,0,0.30);
-}
-
-.padre {
-    display: flex;
-    justify-content: flex-end;
-    width: 100%;
-}
-
-/* Para mis Div */
-.container-box{
-    display: flex;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-.box{
-    width: 100%;
-    background-color: whitesmoke;
-    min-height: 200px;
-    border-radius: 8px;
-    -webkit-box-shadow: 0px 4px 14px 0px rgba(0,0,0,0.30);
-    -moz-box-shadow: 0px 4px 14px 0px rgba(0,0,0,0.30);
-    box-shadow: 0px 4px 14px 0px rgba(0,0,0,0.30);
-    padding: 1rem;
->>>>>>> 7c2fa9fe67705e7c95d9cff9e997cbf9ebb1d859
 }

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 document.getElementById('fibForm').addEventListener('submit', handleFormSubmit);
 
 function handleFormSubmit(e) {
@@ -39,7 +38,7 @@ function createCard(num) {
     });
     return card;
 }
-=======
+
 document.getElementById('fibForm').addEventListener('submit', handleFormSubmit);
 
 function handleFormSubmit(e) {
@@ -80,4 +79,4 @@ function createCard(num) {
     });
     return card;
 }
->>>>>>> 7c2fa9fe67705e7c95d9cff9e997cbf9ebb1d859
+

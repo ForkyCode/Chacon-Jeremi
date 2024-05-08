@@ -1,0 +1,92 @@
+
+body{
+    font-family: "Roboto", sans-serif;
+    padding: 1rem;
+}
+
+p, h1, h2, h3, h4, h5, h6{
+    margin: 0;
+    text-align: center;
+}
+
+.titulo{
+    color: maroon;
+    font-weight: 700;
+}
+
+/* Para mi Div de ingresar candidato */
+.agregar-candidato{
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: center;
+    gap: 16px;
+}
+
+.box{
+    background-color: #DAC5C5;
+    width: 100%;
+    min-width: 400px;
+    min-height: 200px;
+    border-radius: 8px;
+    -webkit-box-shadow: 0px 4px 14px 0px rgba(0,0,0,0.30);
+    -moz-box-shadow: 0px 4px 14px 0px rgba(0,0,0,0.30);
+    box-shadow: 0px 4px 14px 0px rgba(0,0,0,0.30);
+    display: flex;
+    padding: 2rem;
+    flex-direction: column;
+    align-items: center;
+}
+
+.box h2 {
+    margin-bottom: 1rem;
+}
+.box input {
+    margin-bottom: 2rem;
+    margin-top: 2rem; 
+    border: none;
+    border-radius: 10px;
+    padding: 5px 20px;
+}
+.box button {
+    margin-top: 1rem;
+    margin-bottom: 1rem; 
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.30);
+    background-color: maroon;
+    color: whitesmoke;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 50px;
+}
+
+/* para Divs de lista y porcentaje */
+.lista-candidato {
+    margin-top: 2rem; 
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+.listcand {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+
+/* Tablet */
+@media (min-width: 764px){
+    .box{
+        width: 350px;
+    }
+}
+
+
+/* Desktop */
+@media (min-width: 1024px){
+
+}
+
+/* Desktop lg*/
+@media (min-width: 1200px){
+
+}
