@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Ingresos y Egresos</title>
+    <link rel="stylesheet" href="tabla.css">
+</head>
+<body>
+    <header>
+        <h2 id="welcomeMessage"></h2>
+        <div>
+            <a id="profileLink" href="perfil.html">Perfil</a>
+            <img id="logoutIcon" src="logout.png" alt="Logout">
+        </div>
+    </header>
+    
+    <h1 class="titulo">Lista de Ingresos y Egresos</h1>
+
+    <section class="agregar-monto">
+
+        <div class="box">
+            <div class="tab">
+                <button class="tablinks" onclick="openTab(event, 'Ingresos')">Ingresos</button>
+                <button class="tablinks" onclick="openTab(event, 'Egresos')">Egresos</button>
+            </div>
+            <div id="Ingresos" class="tabcontent">
+                <div class="content">
+                    <h2>Ingresar Monto</h2>
+                    <input type="number" id="montoIngreso" placeholder="Monto">
+                    <button onclick="agregarMonto('ingreso')">Agregar Ingreso</button>
+                </div>
+            </div>
+            <div id="Egresos" class="tabcontent">
+                <div class="content">
+                    <h2>Ingresar Monto</h2>
+                    <input type="number" id="montoEgreso" placeholder="Monto">
+                    <button onclick="agregarMonto('egreso')">Agregar Egreso</button>
+                </div>
+            </div>
+        </div>
+        
+    </section>
+    
+    <section class="listas">
+        <div class="box">
+            <h2>Ingresos</h2>
+            <table class="listing ingresos">
+                <thead>
+                    <tr>
+                        <th>Ingreso</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="box">
+            <h2>Porcentajes</h2>
+            <div class="porce"></div>
+        </div>
+
+        <div class="box">
+            <h2>Egresos</h2>
+            <table class="listing egresos">
+                <thead>
+                    <tr>
+                        <th>Egreso</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
+    </section> 
+
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const usuarioActual = localStorage.getItem('usuarioActual');
+    const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+
+    if (usuarioActual) {
+        const usuario = usuarios.find(user => user.username === usuarioActual);
+        if (usuario) {
+            document.getElementById('welcomeMessage').textContent = `Bienvenido ${usuario.nombre}`;
+
+            // Cargar datos en las tablas desde localStorage
+            const ingresosData = JSON.parse(localStorage.getItem('ingresos')) || [];
+            const egresosData = JSON.parse(localStorage.getItem('egresos')) || [];
+
+            ingresosData.forEach(function(monto) {
+                const tableBody = document.querySelector('.listing.ingresos tbody');
+                const newRow = tableBody.insertRow();
+                const cell = newRow.insertCell();
+                cell.innerHTML = '$' + monto;
+            });
+
+            egresosData.forEach(function(monto) {
+                const tableBody = document.querySelector('.listing.egresos tbody');
+                const newRow = tableBody.insertRow();
+                const cell = newRow.insertCell();
+                cell.innerHTML = '-' + '$' + monto;
+            });
+
+            // Actualizar gráfico al cargar la página
+            actualizarGrafico();
+
+        } else {
+            window.location.href = 'login.html';
+        }
+    } else {
+        window.location.href = 'login.html';
+    }
+
+    document.getElementById('logoutIcon').addEventListener('click', function () {
+        localStorage.removeItem('usuarioActual');
+        localStorage.removeItem('ingresos'); // Borrar datos de ingresos
+        localStorage.removeItem('egresos'); // Borrar datos de egresos
+        window.location.href = 'login.html';
+    });
+
+    // Mostrar el tab de Ingresos por defecto
+    document.querySelector('.tablinks').click();
+});
+
+function openTab(evt, tabName) {
+    const tabcontents = document.querySelectorAll('.tabcontent');
+    tabcontents.forEach(tabcontent => {
+        if (tabcontent.id === tabName) {
+            tabcontent.style.display = 'block';
+        } else {
+            tabcontent.style.display = 'none';
+        }
+    });
+
+    const tablinks = document.querySelectorAll('.tablinks');
+    tablinks.forEach(tablink => {
+        tablink.classList.remove('active');
+    });
+
+    evt.currentTarget.classList.add('active');
+}
+function agregarMonto(tipo) {
+    let tableBody;
+    let storageKey;
+
+    if (tipo === 'ingreso') {
+        tableBody = document.querySelector('.listing.ingresos tbody');
+        storageKey = 'ingresos';
+    } else {
+        tableBody = document.querySelector('.listing.egresos tbody');
+        storageKey = 'egresos';
+    }
+
+    const monto = tipo === 'ingreso' ? document.getElementById('montoIngreso').value : document.getElementById('montoEgreso').value;
+    if (monto) {
+        const newRow = tableBody.insertRow();
+        const cell = newRow.insertCell();
+        if (tipo === 'egreso') {
+            cell.innerHTML = '-' + '$' + monto;
+        } else {
+            cell.innerHTML = '$' + monto;
+        }
+
+        // Guardar datos en localStorage
+        let data = JSON.parse(localStorage.getItem(storageKey)) || [];
+        data.push(monto);
+        localStorage.setItem(storageKey, JSON.stringify(data));
+
+        // Llamar a la función para actualizar el gráfico después de agregar un monto
+        actualizarGrafico();
+    }
+}
+
+function actualizarGrafico() {
+    var porceDiv = document.querySelector('.porce');
+    var ingresosTotal = 0;
+    var egresosTotal = 0;
+
+    // Cargar datos desde localStorage
+    var ingresosData = JSON.parse(localStorage.getItem('ingresos')) || [];
+    var egresosData = JSON.parse(localStorage.getItem('egresos')) || [];
+
+    // Calcula el total de ingresos y egresos
+    ingresosData.forEach(function(monto) {
+        ingresosTotal += parseFloat(monto);
+    });
+
+    egresosData.forEach(function(monto) {
+        egresosTotal += parseFloat(monto);
+    });
+
+    var total = ingresosTotal + egresosTotal;
+
+    // Calcula el porcentaje de ingresos y egresos
+    var porcentajeIngresos = total ? ((ingresosTotal / total) * 100).toFixed(2) : 0;
+    var porcentajeEgresos = total ? ((egresosTotal / total) * 100).toFixed(2) : 0;
+
+    // Crea las barras de porcentaje
+    porceDiv.innerHTML = '';
+    var barraIngresos = document.createElement('div');
+    barraIngresos.style.backgroundColor = 'green';
+    barraIngresos.style.width = porcentajeIngresos + '%';
+    barraIngresos.textContent = 'Ingresos: ' + porcentajeIngresos + '%';
+    porceDiv.appendChild(barraIngresos);
+
+    var barraEgresos = document.createElement('div');
+    barraEgresos.style.backgroundColor = 'red';
+    barraEgresos.style.width = porcentajeEgresos + '%';
+    barraEgresos.textContent = 'Egresos: ' + porcentajeEgresos + '%';
+    porceDiv.appendChild(barraEgresos);
+}
+    </script>
+</body>
+</html>

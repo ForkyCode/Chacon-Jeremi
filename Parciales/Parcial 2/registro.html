@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro</title>
+    <link rel="stylesheet" href="stylelr.css">
+</head>
+<body>
+  <div class="register-container">
+    <h2>Registrarse</h2>
+    <form id="registerForm">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" name="nombre" required><br><br>
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required><br><br>
+        <label for="contrasena">Contraseña</label>
+        <input type="password" id="contrasena" name="contrasena" required><br><br>
+        <input type="submit" value="Registrar">
+    </form>
+    <p>¿Ya tienes cuenta? <a href="login.html">Login</a></p>
+</div>
+
+<script>
+     function hashCode(str) {
+            let hash = 0;
+            for (let i = 0, len = str.length; i < len; i++) {
+                let chr = str.charCodeAt(i);
+                hash = (hash << 5) - hash + chr;
+                hash |= 0; // Convert to 32bit integer
+            }
+            return hash;
+        }
+
+        document.getElementById('registerForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const nombre = document.getElementById('nombre').value;
+            const username = document.getElementById('username').value;
+            const contrasena = document.getElementById('contrasena').value;
+
+            const hashedContrasena = hashCode(contrasena).toString();
+
+            const usuario = {
+                nombre: nombre,
+                username: username,
+                contrasena: hashedContrasena
+            };
+
+            let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+            usuarios.push(usuario);
+            localStorage.setItem('usuarios', JSON.stringify(usuarios));
+
+            alert('Usuario registrado con éxito');
+            window.location.href = 'login.html';
+        });
+    </script>
+</script>
+
+</body>
+</html>
