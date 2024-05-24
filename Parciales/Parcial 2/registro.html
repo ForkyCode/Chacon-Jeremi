@@ -23,40 +23,59 @@
 </div>
 
 <script>
-     function hashCode(str) {
-            let hash = 0;
-            for (let i = 0, len = str.length; i < len; i++) {
-                let chr = str.charCodeAt(i);
-                hash = (hash << 5) - hash + chr;
-                hash |= 0; // Convert to 32bit integer
+     const HashModule = (function() {
+            function hashCode(str) {
+                let hash = 0;
+                for (let i = 0, len = str.length; i < len; i++) {
+                    let chr = str.charCodeAt(i);
+                    hash = (hash << 5) - hash + chr;
+                    hash |= 0; // Convert to 32bit integer
+                }
+                return hash;
             }
-            return hash;
-        }
-
-        document.getElementById('registerForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            const nombre = document.getElementById('nombre').value;
-            const username = document.getElementById('username').value;
-            const contrasena = document.getElementById('contrasena').value;
-
-            const hashedContrasena = hashCode(contrasena).toString();
-
-            const usuario = {
-                nombre: nombre,
-                username: username,
-                contrasena: hashedContrasena
+            return {
+                hashCode: hashCode
             };
+        })();
 
-            let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-            usuarios.push(usuario);
-            localStorage.setItem('usuarios', JSON.stringify(usuarios));
+        const RegistrationModule = (function(HashModule) {
+            function init() {
+                document.getElementById('registerForm').addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    registerUser();
+                });
+            }
 
-            alert('Usuario registrado con éxito');
-            window.location.href = 'login.html';
+            function registerUser() {
+                const nombre = document.getElementById('nombre').value;
+                const username = document.getElementById('username').value;
+                const contrasena = document.getElementById('contrasena').value;
+                const hashedContrasena = HashModule.hashCode(contrasena).toString();
+
+                const usuario = {
+                    nombre: nombre,
+                    username: username,
+                    contrasena: hashedContrasena
+                };
+
+                let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+                usuarios.push(usuario);
+                localStorage.setItem('usuarios', JSON.stringify(usuarios));
+
+                alert('Usuario registrado con éxito');
+                window.location.href = 'login.html';
+            }
+
+            return {
+                init: init
+            };
+        })(HashModule);
+
+        document.addEventListener('DOMContentLoaded', function() {
+            RegistrationModule.init();
         });
     </script>
-</script>
+
 
 </body>
 </html>
