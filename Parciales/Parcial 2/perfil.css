@@ -1,0 +1,131 @@
+/* Mobile first */
+body {
+    font-family: Arial, sans-serif;
+}
+
+header {
+    background-color: #6a5acd;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Centramos los elementos verticalmente */
+    padding: 20px 30px; /* Aumentamos el padding */
+    border-radius: 5px;
+    line-height: 25px; /* Ajustamos la altura de línea para centrar verticalmente */
+}
+
+h2 {
+    margin: 0;
+    text-align: center;
+    color: #6a5acd;
+    font-size: 24px; /* Aumentamos el tamaño de la fuente */
+}
+
+#welcomeMessage {
+    margin: 0;
+    color: #f4f4f4;
+    font-size: 20px; /* Aumentamos el tamaño de la fuente */
+}
+
+#profileLink {
+    color: white;
+    text-decoration: none;
+    margin-right: 40px; /* Aumentamos el margen */
+    font-size: 18px; /* Aumentamos el tamaño de la fuente */
+}
+
+#profileLink:hover {
+    color: grey;
+}
+
+#logoutIcon {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    vertical-align: middle; /* Alineamos verticalmente al centro */
+    margin-right: 2cqb;
+}
+
+#logoutIcon:hover {
+    filter: brightness(0.7);
+}
+
+.profile-box {
+    background-color: #f4f4f4;
+    padding: 40px; /* Aumentamos el padding */
+    border-radius: 10px;
+    width: 600px; /* Aumentamos el ancho */
+    margin: 40px auto; /* Aumentamos el margen */
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Aumentamos el tamaño de la sombra */
+}
+
+.profile-image {
+    margin-bottom: 20px; /* Aumentamos el margen */
+}
+
+.profile-image img {
+    width: 150px; /* Aumentamos el tamaño de la imagen */
+    height: 150px; /* Aumentamos el tamaño de la imagen */
+    border-radius: 100%;
+    object-fit: cover;
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.profile-image input {
+    margin-top: 20px; /* Aumentamos el margen */
+}
+
+.profile-info p {
+    margin: 20px 0; /* Aumentamos el margen */
+    font-size: 18px; /* Aumentamos el tamaño de la fuente */
+}
+
+.profile-info button {
+    margin-left: 20px; /* Aumentamos el margen */
+    background-color: #6a5acd;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px; /* Aumentamos el padding */
+    cursor: pointer;
+    font-size: 16px; /* Aumentamos el tamaño de la fuente */
+}
+
+.profile-info button:hover {
+    background-color: #483d8b;
+}
+
+#saveBtn {
+    margin-top: 30px; /* Aumentamos el margen */
+    background-color: #6a5acd;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 15px 30px; /* Aumentamos el padding */
+    cursor: pointer;
+    font-size: 18px; /* Aumentamos el tamaño de la fuente */
+}
+
+#saveBtn:hover {
+    background-color: #483d8b;
+}
+
+/* Tablet */
+@media (min-width: 764px) {
+    .profile-box  {
+        width: 350px;
+    }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+}
+
+/* Desktop lg */
+@media (min-width: 1200px) {
+}

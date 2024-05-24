@@ -9,8 +9,9 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center; /* Centramos los elementos verticalmente */
-    padding: 10px 20px;
-    line-height: 24px; /* Ajustamos la altura de línea para centrar verticalmente */
+    padding: 20px 30px; /* Aumentamos el padding */
+    line-height: 25px; /* Ajustamos la altura de línea para centrar verticalmente */
+    border-radius: 5px;
 }
 
 #welcomeMessage {
@@ -20,8 +21,8 @@ header {
 #profileLink {
     color: white;
     text-decoration: none;
-    margin-right: 30px;
-    vertical-align: middle; /* Alineamos verticalmente al centro */
+    margin-right: 40px; /* Aumentamos el margen */
+    font-size: 18px; /* Aumentamos el tamaño de la fuente */
 }
 
 #profileLink:hover {
@@ -49,6 +50,7 @@ p, h1, h3, h4, h5, h6 {
     color: #6a5acd;
     font-weight: 700;
     margin-top: 30px;
+    margin-bottom: 10px;
 }
 
 /* Para mi Div de ingresar monto */
@@ -62,7 +64,7 @@ p, h1, h3, h4, h5, h6 {
 .box {
     background-color: #DAC5C5;
     width: 100%;
-    min-width: 400px;
+    min-width: 300px;
     min-height: 200px;
     border-radius: 8px;
     -webkit-box-shadow: 0px 4px 14px 0px rgba(0,0,0,0.30);
@@ -75,7 +77,7 @@ p, h1, h3, h4, h5, h6 {
 }
 
 .box h2 {
-    margin-bottom: 1rem;
+    margin-bottom: 10px;
 }
 
 .box input {

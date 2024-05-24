@@ -87,18 +87,18 @@
         if (usuario) {
             document.getElementById('welcomeMessage').textContent = `Bienvenido ${usuario.nombre}`;
 
-            // Cargar datos en las tablas desde localStorage
-            const ingresosData = JSON.parse(localStorage.getItem('ingresos')) || [];
-            const egresosData = JSON.parse(localStorage.getItem('egresos')) || [];
+            // Cargar datos en las tablas desde localStorage específico del usuario
+            const ingresosData = JSON.parse(localStorage.getItem(`ingresos_${usuarioActual}`)) || [];
+            const egresosData = JSON.parse(localStorage.getItem(`egresos_${usuarioActual}`)) || [];
 
-            ingresosData.forEach(function(monto) {
+            ingresosData.forEach(function (monto) {
                 const tableBody = document.querySelector('.listing.ingresos tbody');
                 const newRow = tableBody.insertRow();
                 const cell = newRow.insertCell();
                 cell.innerHTML = '$' + monto;
             });
 
-            egresosData.forEach(function(monto) {
+            egresosData.forEach(function (monto) {
                 const tableBody = document.querySelector('.listing.egresos tbody');
                 const newRow = tableBody.insertRow();
                 const cell = newRow.insertCell();
@@ -117,8 +117,6 @@
 
     document.getElementById('logoutIcon').addEventListener('click', function () {
         localStorage.removeItem('usuarioActual');
-        localStorage.removeItem('ingresos'); // Borrar datos de ingresos
-        localStorage.removeItem('egresos'); // Borrar datos de egresos
         window.location.href = 'login.html';
     });
 
@@ -143,16 +141,20 @@ function openTab(evt, tabName) {
 
     evt.currentTarget.classList.add('active');
 }
+
 function agregarMonto(tipo) {
+    const usuarioActual = localStorage.getItem('usuarioActual');
+    if (!usuarioActual) return;
+
     let tableBody;
     let storageKey;
 
     if (tipo === 'ingreso') {
         tableBody = document.querySelector('.listing.ingresos tbody');
-        storageKey = 'ingresos';
+        storageKey = `ingresos_${usuarioActual}`;
     } else {
         tableBody = document.querySelector('.listing.egresos tbody');
-        storageKey = 'egresos';
+        storageKey = `egresos_${usuarioActual}`;
     }
 
     const monto = tipo === 'ingreso' ? document.getElementById('montoIngreso').value : document.getElementById('montoEgreso').value;
@@ -165,7 +167,7 @@ function agregarMonto(tipo) {
             cell.innerHTML = '$' + monto;
         }
 
-        // Guardar datos en localStorage
+        // Guardar datos en localStorage específico del usuario
         let data = JSON.parse(localStorage.getItem(storageKey)) || [];
         data.push(monto);
         localStorage.setItem(storageKey, JSON.stringify(data));
@@ -176,38 +178,41 @@ function agregarMonto(tipo) {
 }
 
 function actualizarGrafico() {
-    var porceDiv = document.querySelector('.porce');
-    var ingresosTotal = 0;
-    var egresosTotal = 0;
+    const usuarioActual = localStorage.getItem('usuarioActual');
+    if (!usuarioActual) return;
 
-    // Cargar datos desde localStorage
-    var ingresosData = JSON.parse(localStorage.getItem('ingresos')) || [];
-    var egresosData = JSON.parse(localStorage.getItem('egresos')) || [];
+    const porceDiv = document.querySelector('.porce');
+    let ingresosTotal = 0;
+    let egresosTotal = 0;
+
+    // Cargar datos desde localStorage específico del usuario
+    const ingresosData = JSON.parse(localStorage.getItem(`ingresos_${usuarioActual}`)) || [];
+    const egresosData = JSON.parse(localStorage.getItem(`egresos_${usuarioActual}`)) || [];
 
     // Calcula el total de ingresos y egresos
-    ingresosData.forEach(function(monto) {
+    ingresosData.forEach(function (monto) {
         ingresosTotal += parseFloat(monto);
     });
 
-    egresosData.forEach(function(monto) {
+    egresosData.forEach(function (monto) {
         egresosTotal += parseFloat(monto);
     });
 
-    var total = ingresosTotal + egresosTotal;
+    const total = ingresosTotal + egresosTotal;
 
     // Calcula el porcentaje de ingresos y egresos
-    var porcentajeIngresos = total ? ((ingresosTotal / total) * 100).toFixed(2) : 0;
-    var porcentajeEgresos = total ? ((egresosTotal / total) * 100).toFixed(2) : 0;
+    const porcentajeIngresos = total ? ((ingresosTotal / total) * 100).toFixed(2) : 0;
+    const porcentajeEgresos = total ? ((egresosTotal / total) * 100).toFixed(2) : 0;
 
     // Crea las barras de porcentaje
     porceDiv.innerHTML = '';
-    var barraIngresos = document.createElement('div');
+    const barraIngresos = document.createElement('div');
     barraIngresos.style.backgroundColor = 'green';
     barraIngresos.style.width = porcentajeIngresos + '%';
     barraIngresos.textContent = 'Ingresos: ' + porcentajeIngresos + '%';
     porceDiv.appendChild(barraIngresos);
 
-    var barraEgresos = document.createElement('div');
+    const barraEgresos = document.createElement('div');
     barraEgresos.style.backgroundColor = 'red';
     barraEgresos.style.width = porcentajeEgresos + '%';
     barraEgresos.textContent = 'Egresos: ' + porcentajeEgresos + '%';
