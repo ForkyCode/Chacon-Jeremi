@@ -8,7 +8,7 @@
 </head>
 <body>
 
-     <header>
+    <header>
         <h2 id="welcomeMessage"></h2>
         <div>
             <a id="profileLink" href="tabla.html">Tablas</a>
@@ -35,141 +35,142 @@
     </div>
 
     <script>
-        const HashModule = (function() {
-            function hashCode(str) {
-                let hash = 0;
-                for (let i = 0, len = str.length; i < len; i++) {
-                    let chr = str.charCodeAt(i);
-                    hash = (hash << 5) - hash + chr;
-                    hash |= 0; // Convert to 32bit integer
-                }
-                return hash;
-            }
-            return {
-                hashCode: hashCode
-            };
-        })();
+const HashModule = (function() {
+    function hashCode(str) {
+        let hash = 0;
+        for (let i = 0, len = str.length; i < len; i++) {
+            let chr = str.charCodeAt(i);
+            hash = (hash << 5) - hash + chr;
+            hash |= 0;
+        }
+        return hash;
+    }
+    return {
+        hashCode: hashCode
+    };
+})();
 
-        const UserModule = (function(HashModule) {
-            let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-            let usuarioActual = localStorage.getItem('usuarioActual');
-            let usuario = null;
+const UserModule = (function(HashModule) {
+    let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+    let usuarioActual = localStorage.getItem('usuarioActual');
+    let usuario = null;
 
-            function getUsuarioActual() {
-                if (usuarioActual) {
-                    usuario = usuarios.find(user => user.username === usuarioActual);
-                    if (!usuario) {
-                        redirectToLogin();
-                    }
-                } else {
-                    redirectToLogin();
-                }
-                return usuario;
-            }
-
-            function redirectToLogin() {
-                window.location.href = 'login.html';
-            }
-
-            function logout() {
-                localStorage.removeItem('usuarioActual');
+    function getUsuarioActual() {
+        if (usuarioActual) {
+            usuario = usuarios.find(user => user.username === usuarioActual);
+            if (!usuario) {
                 redirectToLogin();
             }
+        } else {
+            redirectToLogin();
+        }
+        return usuario;
+    }
 
-            function updateUsername(newUsername) {
-                if (newUsername) {
-                    usuario.username = newUsername;
-                    localStorage.setItem('usuarioActual', newUsername);
-                }
+    function redirectToLogin() {
+        window.location.href = 'login.html';
+    }
+
+    function logout() {
+        localStorage.removeItem('usuarioActual');
+        redirectToLogin();
+    }
+
+    function updateUsername(newUsername) {
+        if (newUsername) {
+            usuario.username = newUsername;
+            localStorage.setItem('usuarioActual', newUsername);
+        }
+    }
+
+    function updatePassword(newPassword) {
+        if (newPassword) {
+            usuario.contrasena = HashModule.hashCode(newPassword).toString();
+        }
+    }
+
+    function updateImage(imageData) {
+        usuario.imagen = imageData;
+    }
+
+    function saveChanges() {
+        const usuarioIndex = usuarios.findIndex(user => user.username === usuarioActual);
+        if (usuarioIndex > -1) {
+            usuarios[usuarioIndex] = usuario;
+        } else {
+            const usuarioIndexNuevo = usuarios.findIndex(user => user.username === usuario.username);
+            if (usuarioIndexNuevo > -1) {
+                usuarios[usuarioIndexNuevo] = usuario;
+                localStorage.setItem('usuarioActual', usuario.username);
             }
+        }
+        localStorage.setItem('usuarios', JSON.stringify(usuarios));
+    }
 
-            function updatePassword(newPassword) {
-                if (newPassword) {
-                    usuario.contrasena = HashModule.hashCode(newPassword).toString();
-                }
+    return {
+        getUsuarioActual: getUsuarioActual,
+        logout: logout,
+        updateUsername: updateUsername,
+        updatePassword: updatePassword,
+        updateImage: updateImage,
+        saveChanges: saveChanges
+    };
+})(HashModule);
+
+const DOMModule = (function(UserModule) {
+    function init() {
+        const usuario = UserModule.getUsuarioActual();
+        if (usuario) {
+            document.getElementById('welcomeMessage').textContent = `Bienvenido ${usuario.nombre}`;
+            document.getElementById('nombreUsuario').textContent = usuario.nombre;
+            document.getElementById('usernameUsuario').textContent = usuario.username;
+            if (usuario.imagen) {
+                document.getElementById('profileImage').src = usuario.imagen;
             }
+        }
 
-            function updateImage(imageData) {
-                usuario.imagen = imageData;
-            }
+        document.getElementById('logoutIcon').addEventListener('click', UserModule.logout);
+        document.getElementById('editUsernameBtn').addEventListener('click', editUsername);
+        document.getElementById('editPasswordBtn').addEventListener('click', editPassword);
+        document.getElementById('imageInput').addEventListener('change', handleImageChange);
+        document.getElementById('saveBtn').addEventListener('click', UserModule.saveChanges);
+    }
 
-            function saveChanges() {
-                const usuarioIndex = usuarios.findIndex(user => user.username === usuarioActual);
-                if (usuarioIndex > -1) {
-                    usuarios[usuarioIndex] = usuario;
-                } else {
-                    const usuarioIndexNuevo = usuarios.findIndex(user => user.username === usuario.username);
-                    if (usuarioIndexNuevo > -1) {
-                        usuarios[usuarioIndexNuevo] = usuario;
-                        localStorage.setItem('usuarioActual', usuario.username);
-                    }
-                }
-                localStorage.setItem('usuarios', JSON.stringify(usuarios));
-            }
+    function editUsername() {
+        const newUsername = prompt('Ingrese el nuevo nombre de usuario:', document.getElementById('usernameUsuario').textContent);
+        if (newUsername) {
+            UserModule.updateUsername(newUsername);
+            document.getElementById('usernameUsuario').textContent = newUsername;
+        }
+    }
 
-            return {
-                getUsuarioActual: getUsuarioActual,
-                logout: logout,
-                updateUsername: updateUsername,
-                updatePassword: updatePassword,
-                updateImage: updateImage,
-                saveChanges: saveChanges
+    function editPassword() {
+        const newPassword = prompt('Ingrese la nueva contraseña:');
+        if (newPassword) {
+            UserModule.updatePassword(newPassword);
+            alert('Contraseña actualizada exitosamente.');
+        }
+    }
+
+    function handleImageChange(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('profileImage').src = e.target.result;
+                UserModule.updateImage(e.target.result);
             };
-        })(HashModule);
+            reader.readAsDataURL(file);
+        }
+    }
 
-        const DOMModule = (function(UserModule) {
-            function init() {
-                const usuario = UserModule.getUsuarioActual();
-                if (usuario) {
-                    document.getElementById('welcomeMessage').textContent = `Bienvenido ${usuario.nombre}`;
-                    document.getElementById('nombreUsuario').textContent = usuario.nombre;
-                    document.getElementById('usernameUsuario').textContent = usuario.username;
-                    if (usuario.imagen) {
-                        document.getElementById('profileImage').src = usuario.imagen;
-                    }
-                }
+    return {
+        init: init
+    };
+})(UserModule);
 
-                document.getElementById('logoutIcon').addEventListener('click', UserModule.logout);
-                document.getElementById('editUsernameBtn').addEventListener('click', editUsername);
-                document.getElementById('editPasswordBtn').addEventListener('click', editPassword);
-                document.getElementById('imageInput').addEventListener('change', handleImageChange);
-                document.getElementById('saveBtn').addEventListener('click', UserModule.saveChanges);
-            }
+document.addEventListener('DOMContentLoaded', DOMModule.init);
 
-            function editUsername() {
-                const newUsername = prompt('Ingrese el nuevo nombre de usuario:', document.getElementById('usernameUsuario').textContent);
-                if (newUsername) {
-                    UserModule.updateUsername(newUsername);
-                    document.getElementById('usernameUsuario').textContent = newUsername;
-                }
-            }
-
-            function editPassword() {
-                const newPassword = prompt('Ingrese la nueva contraseña:');
-                if (newPassword) {
-                    UserModule.updatePassword(newPassword);
-                    alert('Contraseña actualizada exitosamente.');
-                }
-            }
-
-            function handleImageChange(event) {
-                const file = event.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        document.getElementById('profileImage').src = e.target.result;
-                        UserModule.updateImage(e.target.result);
-                    };
-                    reader.readAsDataURL(file);
-                }
-            }
-
-            return {
-                init: init
-            };
-        })(UserModule);
-
-        document.addEventListener('DOMContentLoaded', DOMModule.init);
     </script>
 </body>
 </html>

@@ -7,68 +7,66 @@
     <link rel="stylesheet" href="stylelr.css">
 </head>
 <body>
-    <body>
-        <div class="register-container">
-            <h2>Iniciar Sesión</h2>
-            <form id="loginForm">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" required><br><br>
-                <label for="contrasena">Contraseña</label>
-                <input type="password" id="contrasena" name="contrasena" required><br><br>
-                <input type="submit" value="Login">
-            </form>
-            <p>¿No tienes cuenta? <a href="registro.html">REGISTRATE!</a></p>
-        </div>
-    
-        <script>
-            const HashModule = (function() {
-            function hashCode(str) {
-                let hash = 0;
-                for (let i = 0, len = str.length; i < len; i++) {
-                    let chr = str.charCodeAt(i);
-                    hash = (hash << 5) - hash + chr;
-                    hash |= 0; // Convert to 32bit integer
-                }
-                return hash;
-            }
-            return {
-                hashCode: hashCode
-            };
-        })();
+    <div class="register-container">
+        <h2>Iniciar Sesión</h2>
+        <form id="loginForm">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required><br><br>
+            <label for="contrasena">Contraseña</label>
+            <input type="password" id="contrasena" name="contrasena" required><br><br>
+            <input type="submit" value="Login">
+        </form>
+        <p>¿No tienes cuenta? <a href="registro.html">REGISTRATE!</a></p>
+    </div>
 
-        const LoginModule = (function(HashModule) {
-            function init() {
-                document.getElementById('loginForm').addEventListener('submit', function(event) {
-                    event.preventDefault();
-                    login();
-                });
-            }
+    <script>
+const HashModule = (function() {
+    function hashCode(str) {
+        let hash = 0;
+        for (let i = 0, len = str.length; i < len; i++) {
+            let chr = str.charCodeAt(i);
+            hash = (hash << 5) - hash + chr;
+            hash |= 0;
+        }
+        return hash;
+    }
+    return {
+        hashCode: hashCode
+    };
+})();
 
-            function login() {
-                const username = document.getElementById('username').value;
-                const contrasena = document.getElementById('contrasena').value;
-                const hashedContrasena = HashModule.hashCode(contrasena).toString();
-
-                const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-                const usuarioEncontrado = usuarios.find(user => user.username === username && user.contrasena === hashedContrasena);
-
-                if (usuarioEncontrado) {
-                    localStorage.setItem('usuarioActual', username); // Guardar usuario actual en localStorage
-                    alert('Inicio de sesión exitoso');
-                    window.location.href = 'tabla.html'; // Redirigir a tabla.html
-                } else {
-                    alert('Usuario o contraseña incorrectos');
-                }
-            }
-
-            return {
-                init: init
-            };
-        })(HashModule);
-
-        document.addEventListener('DOMContentLoaded', function() {
-            LoginModule.init();
+const LoginModule = (function(HashModule) {
+    function init() {
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            login();
         });
-        </script>
-    </body>
-    </html>
+    }
+
+    function login() {
+        const username = document.getElementById('username').value;
+        const contrasena = document.getElementById('contrasena').value;
+        const hashedContrasena = HashModule.hashCode(contrasena).toString();
+        const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+        const usuarioEncontrado = usuarios.find(user => user.username === username && user.contrasena === hashedContrasena);
+
+        if (usuarioEncontrado) {
+            localStorage.setItem('usuarioActual', username);
+            alert('Inicio de sesión exitoso');
+            window.location.href = 'tabla.html';
+        } else {
+            alert('Usuario o contraseña incorrectos');
+        }
+    }
+
+    return {
+        init: init
+    };
+})(HashModule);
+
+document.addEventListener('DOMContentLoaded', function() {
+    LoginModule.init();
+});
+    </script>
+</body>
+</html>

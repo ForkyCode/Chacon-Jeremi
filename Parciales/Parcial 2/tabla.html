@@ -7,8 +7,6 @@
     <link rel="stylesheet" href="tabla.css">
 </head>
 <body>
-</head>
-<body>
     <header>
         <h2 id="welcomeMessage"></h2>
         <div>
@@ -74,118 +72,118 @@
     </section> 
 
     <script>
-        const App = (() => {
-            const usuarioActual = localStorage.getItem('usuarioActual');
-            const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+        //modulo utilizando IIFE (Immediately Invoked Function Expression)
+const App = (() => {
+    const usuarioActual = localStorage.getItem('usuarioActual');
+    const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
 
-            const init = () => {
-                if (usuarioActual) {
-                    const usuario = usuarios.find(user => user.username === usuarioActual);
-                    if (usuario) {
-                        document.getElementById('welcomeMessage').textContent = `Bienvenido ${usuario.nombre}`;
-                        cargarDatos('ingresos', '.listing.ingresos tbody');
-                        cargarDatos('egresos', '.listing.egresos tbody');
-                        actualizarGrafico();
-                    } else {
-                        redirigirLogin();
-                    }
-                } else {
-                    redirigirLogin();
-                }
-
-                document.getElementById('logoutIcon').addEventListener('click', logout);
-                document.querySelector('.tablinks').click();
-            };
-
-            const redirigirLogin = () => {
-                window.location.href = 'login.html';
-            };
-
-            const logout = () => {
-                localStorage.removeItem('usuarioActual');
+    const init = () => {
+        if (usuarioActual) {
+            const usuario = usuarios.find(user => user.username === usuarioActual);
+            if (usuario) {
+                document.getElementById('welcomeMessage').textContent = `Bienvenido ${usuario.nombre}`;
+                cargarDatos('ingresos', '.listing.ingresos tbody');
+                cargarDatos('egresos', '.listing.egresos tbody');
+                actualizarGrafico();
+            } else {
                 redirigirLogin();
-            };
+            }
+        } else {
+            redirigirLogin();
+        }
 
-            const cargarDatos = (tipo, selector) => {
-                const data = JSON.parse(localStorage.getItem(`${tipo}_${usuarioActual}`)) || [];
-                const tableBody = document.querySelector(selector);
-                data.forEach(monto => {
-                    const newRow = tableBody.insertRow();
-                    const cell = newRow.insertCell();
-                    cell.innerHTML = tipo === 'egresos' ? `-$${monto}` : `$${monto}`;
-                });
-            };
+        document.getElementById('logoutIcon').addEventListener('click', logout);
+        document.querySelector('.tablinks').click();
+    };
 
-            const openTab = (evt, tabName) => {
-                document.querySelectorAll('.tabcontent').forEach(tabcontent => {
-                    tabcontent.style.display = tabcontent.id === tabName ? 'block' : 'none';
-                });
+    const redirigirLogin = () => {
+        window.location.href = 'login.html';
+    };
 
-                document.querySelectorAll('.tablinks').forEach(tablink => {
-                    tablink.classList.remove('active');
-                });
+    const logout = () => {
+        localStorage.removeItem('usuarioActual');
+        redirigirLogin();
+    };
 
-                evt.currentTarget.classList.add('active');
-            };
+    const cargarDatos = (tipo, selector) => {
+        const data = JSON.parse(localStorage.getItem(`${tipo}_${usuarioActual}`)) || [];
+        const tableBody = document.querySelector(selector);
+        tableBody.innerHTML = ''; // Clear existing rows
+        data.forEach(monto => {
+            const newRow = tableBody.insertRow();
+            const cell = newRow.insertCell();
+            cell.innerHTML = tipo === 'egresos' ? `-$${monto}` : `$${monto}`;
+        });
+    };
 
-            const agregarMonto = tipo => {
-                if (!usuarioActual) return;
+    const openTab = (evt, tabName) => {
+        document.querySelectorAll('.tabcontent').forEach(tabcontent => {
+            tabcontent.style.display = tabcontent.id === tabName ? 'block' : 'none';
+        });
+        document.querySelectorAll('.tablinks').forEach(tablink => {
+            tablink.classList.remove('active');
+        });
+        evt.currentTarget.classList.add('active');
+    };
 
-                const monto = tipo === 'ingreso' ? document.getElementById('montoIngreso').value : document.getElementById('montoEgreso').value;
-                if (monto) {
-                    const tableBody = document.querySelector(tipo === 'ingreso' ? '.listing.ingresos tbody' : '.listing.egresos tbody');
-                    const newRow = tableBody.insertRow();
-                    const cell = newRow.insertCell();
-                    cell.innerHTML = tipo === 'egreso' ? `-$${monto}` : `$${monto}`;
+    const agregarMonto = tipo => {
+        if (!usuarioActual) return;
 
-                    const storageKey = `${tipo}s_${usuarioActual}`;
-                    let data = JSON.parse(localStorage.getItem(storageKey)) || [];
-                    data.push(monto);
-                    localStorage.setItem(storageKey, JSON.stringify(data));
+        const monto = tipo === 'ingreso' ? document.getElementById('montoIngreso').value : document.getElementById('montoEgreso').value;
+        if (monto) {
+            const tableBody = document.querySelector(tipo === 'ingreso' ? '.listing.ingresos tbody' : '.listing.egresos tbody');
+            const newRow = tableBody.insertRow();
+            const cell = newRow.insertCell();
+            cell.innerHTML = tipo === 'egreso' ? `-$${monto}` : `$${monto}`;
 
-                    actualizarGrafico();
-                }
-            };
+            const storageKey = `${tipo}s_${usuarioActual}`;
+            let data = JSON.parse(localStorage.getItem(storageKey)) || [];
+            data.push(monto);
+            localStorage.setItem(storageKey, JSON.stringify(data));
 
-            const actualizarGrafico = () => {
-                if (!usuarioActual) return;
+            actualizarGrafico();
+        }
+    };
 
-                const porceDiv = document.querySelector('.porce');
-                let ingresosTotal = 0;
-                let egresosTotal = 0;
+    const actualizarGrafico = () => {
+        if (!usuarioActual) return;
 
-                const ingresosData = JSON.parse(localStorage.getItem(`ingresos_${usuarioActual}`)) || [];
-                const egresosData = JSON.parse(localStorage.getItem(`egresos_${usuarioActual}`)) || [];
+        const porceDiv = document.querySelector('.porce');
+        let ingresosTotal = 0;
+        let egresosTotal = 0;
 
-                ingresosTotal = ingresosData.reduce((total, monto) => total + parseFloat(monto), 0);
-                egresosTotal = egresosData.reduce((total, monto) => total + parseFloat(monto), 0);
-                const total = ingresosTotal + egresosTotal;
+        const ingresosData = JSON.parse(localStorage.getItem(`ingresos_${usuarioActual}`)) || [];
+        const egresosData = JSON.parse(localStorage.getItem(`egresos_${usuarioActual}`)) || [];
 
-                const porcentajeIngresos = total ? ((ingresosTotal / total) * 100).toFixed(2) : 0;
-                const porcentajeEgresos = total ? ((egresosTotal / total) * 100).toFixed(2) : 0;
+        ingresosTotal = ingresosData.reduce((total, monto) => total + parseFloat(monto), 0);
+        egresosTotal = egresosData.reduce((total, monto) => total + parseFloat(monto), 0);
+        const total = ingresosTotal + egresosTotal;
 
-                porceDiv.innerHTML = '';
-                const barraIngresos = document.createElement('div');
-                barraIngresos.style.backgroundColor = 'green';
-                barraIngresos.style.width = `${porcentajeIngresos}%`;
-                barraIngresos.textContent = `Ingresos: ${porcentajeIngresos}%`;
-                porceDiv.appendChild(barraIngresos);
+        const porcentajeIngresos = total ? ((ingresosTotal / total) * 100).toFixed(2) : 0;
+        const porcentajeEgresos = total ? ((egresosTotal / total) * 100).toFixed(2) : 0;
 
-                const barraEgresos = document.createElement('div');
-                barraEgresos.style.backgroundColor = 'red';
-                barraEgresos.style.width = `${porcentajeEgresos}%`;
-                barraEgresos.textContent = `Egresos: ${porcentajeEgresos}%`;
-                porceDiv.appendChild(barraEgresos);
-            };
+        porceDiv.innerHTML = '';
+        const barraIngresos = document.createElement('div');
+        barraIngresos.style.backgroundColor = 'green';
+        barraIngresos.style.width = `${porcentajeIngresos}%`;
+        barraIngresos.textContent = `Ingresos: ${porcentajeIngresos}%`;
+        porceDiv.appendChild(barraIngresos);
 
-            return {
-                init,
-                openTab,
-                agregarMonto
-            };
-        })();
+        const barraEgresos = document.createElement('div');
+        barraEgresos.style.backgroundColor = 'red';
+        barraEgresos.style.width = `${porcentajeEgresos}%`;
+        barraEgresos.textContent = `Egresos: ${porcentajeEgresos}%`;
+        porceDiv.appendChild(barraEgresos);
+    };
 
-        document.addEventListener('DOMContentLoaded', App.init);
+    return {
+        init,
+        openTab,
+        agregarMonto
+    };
+})();
+
+document.addEventListener('DOMContentLoaded', App.init);
     </script>
 </body>
 </html>
