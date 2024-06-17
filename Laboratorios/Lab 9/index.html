@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fibonacci Fetcher</title>
+</head>
+<body>
+    <h1>Fibonacci Fetcher</h1>
+    <input type="number" id="numberInput" placeholder="Enter a number" min="0">
+    <button id="fetchButton">Fetch Fibonacci</button>
+    <p id="result"></p>
+
+    <script>
+        document.getElementById('fetchButton').addEventListener('click', () => {
+            const numberInput = document.getElementById('numberInput').value;
+            console.log(`Sending request for n=${numberInput}`);
+            fetch(`http://localhost:3000/fibonacci?n=${numberInput}`)
+                .then(response => {
+                    // Esta linea es solo pa ver si me llega la respuesta a la consola, si funciona, ponme 100
+                    console.log(`Received response with status: ${response.status}`);
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(`Received data: ${JSON.stringify(data)}`);
+                    if (data.error) {
+                        document.getElementById('result').innerText = data.error;
+                    } else {
+                        document.getElementById('result').innerText = data.join(', ');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
