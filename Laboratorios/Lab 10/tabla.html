@@ -73,117 +73,130 @@
 
     <script>
         //modulo utilizando IIFE (Immediately Invoked Function Expression)
-const App = (() => {
-    const usuarioActual = localStorage.getItem('usuarioActual');
-    const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+        const App = (() => {
+            const usuarioActual = localStorage.getItem('usuarioActual');
 
-    const init = () => {
-        if (usuarioActual) {
-            const usuario = usuarios.find(user => user.username === usuarioActual);
-            if (usuario) {
-                document.getElementById('welcomeMessage').textContent = `Bienvenido ${usuario.nombre}`;
-                cargarDatos('ingresos', '.listing.ingresos tbody');
-                cargarDatos('egresos', '.listing.egresos tbody');
-                actualizarGrafico();
-            } else {
+            const init = () => {
+                if (usuarioActual) {
+                    fetch(`http://localhost:3000/api/ingresos?usuario=${usuarioActual}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            document.getElementById('welcomeMessage').textContent = `Bienvenido ${usuarioActual}`;
+                            cargarDatos(data, '.listing.ingresos tbody', 'ingreso');
+                            actualizarGrafico();
+                        });
+
+                    fetch(`http://localhost:3000/api/egresos?usuario=${usuarioActual}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            cargarDatos(data, '.listing.egresos tbody', 'egreso');
+                            actualizarGrafico();
+                        });
+                } else {
+                    redirigirLogin();
+                }
+
+                document.getElementById('logoutIcon').addEventListener('click', logout);
+                document.querySelector('.tablinks').click();
+            };
+
+            const redirigirLogin = () => {
+                window.location.href = 'login.html';
+            };
+
+            const logout = () => {
+                localStorage.removeItem('usuarioActual');
                 redirigirLogin();
-            }
-        } else {
-            redirigirLogin();
-        }
+            };
 
-        document.getElementById('logoutIcon').addEventListener('click', logout);
-        document.querySelector('.tablinks').click();
-    };
+            const cargarDatos = (data, selector, tipo) => {
+                const tableBody = document.querySelector(selector);
+                tableBody.innerHTML = ''; // Clear existing rows
+                data.forEach(monto => {
+                    const newRow = tableBody.insertRow();
+                    const cell = newRow.insertCell();
+                    cell.innerHTML = tipo === 'egreso' ? `-$${monto}` : `$${monto}`;
+                });
+            };
 
-    const redirigirLogin = () => {
-        window.location.href = 'login.html';
-    };
+            const openTab = (evt, tabName) => {
+                document.querySelectorAll('.tabcontent').forEach(tabcontent => {
+                    tabcontent.style.display = tabcontent.id === tabName ? 'block' : 'none';
+                });
+                document.querySelectorAll('.tablinks').forEach(tablink => {
+                    tablink.classList.remove('active');
+                });
+                evt.currentTarget.classList.add('active');
+            };
 
-    const logout = () => {
-        localStorage.removeItem('usuarioActual');
-        redirigirLogin();
-    };
+            const agregarMonto = tipo => {
+                if (!usuarioActual) return;
 
-    const cargarDatos = (tipo, selector) => {
-        const data = JSON.parse(localStorage.getItem(`${tipo}_${usuarioActual}`)) || [];
-        const tableBody = document.querySelector(selector);
-        tableBody.innerHTML = ''; // Clear existing rows
-        data.forEach(monto => {
-            const newRow = tableBody.insertRow();
-            const cell = newRow.insertCell();
-            cell.innerHTML = tipo === 'egresos' ? `-$${monto}` : `$${monto}`;
-        });
-    };
+                const monto = tipo === 'ingreso' ? document.getElementById('montoIngreso').value : document.getElementById('montoEgreso').value;
+                if (monto) {
+                    const tableBody = document.querySelector(tipo === 'ingreso' ? '.listing.ingresos tbody' : '.listing.egresos tbody');
+                    const newRow = tableBody.insertRow();
+                    const cell = newRow.insertCell();
+                    cell.innerHTML = tipo === 'egreso' ? `-$${monto}` : `$${monto}`;
 
-    const openTab = (evt, tabName) => {
-        document.querySelectorAll('.tabcontent').forEach(tabcontent => {
-            tabcontent.style.display = tabcontent.id === tabName ? 'block' : 'none';
-        });
-        document.querySelectorAll('.tablinks').forEach(tablink => {
-            tablink.classList.remove('active');
-        });
-        evt.currentTarget.classList.add('active');
-    };
+                    fetch(`http://localhost:3000/api/${tipo}s`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ usuario: usuarioActual, monto })
+                    })
+                    .then(response => response.json())
+                    .then(() => {
+                        actualizarGrafico();
+                    });
+                }
+            };
 
-    const agregarMonto = tipo => {
-        if (!usuarioActual) return;
+            const actualizarGrafico = () => {
+                if (!usuarioActual) return;
 
-        const monto = tipo === 'ingreso' ? document.getElementById('montoIngreso').value : document.getElementById('montoEgreso').value;
-        if (monto) {
-            const tableBody = document.querySelector(tipo === 'ingreso' ? '.listing.ingresos tbody' : '.listing.egresos tbody');
-            const newRow = tableBody.insertRow();
-            const cell = newRow.insertCell();
-            cell.innerHTML = tipo === 'egreso' ? `-$${monto}` : `$${monto}`;
+                const porceDiv = document.querySelector('.porce');
+                let ingresosTotal = 0;
+                let egresosTotal = 0;
 
-            const storageKey = `${tipo}s_${usuarioActual}`;
-            let data = JSON.parse(localStorage.getItem(storageKey)) || [];
-            data.push(monto);
-            localStorage.setItem(storageKey, JSON.stringify(data));
+                fetch(`http://localhost:3000/api/ingresos?usuario=${usuarioActual}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        ingresosTotal = data.reduce((total, monto) => total + parseFloat(monto), 0);
+                        fetch(`http://localhost:3000/api/egresos?usuario=${usuarioActual}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                egresosTotal = data.reduce((total, monto) => total + parseFloat(monto), 0);
+                                const total = ingresosTotal + egresosTotal;
 
-            actualizarGrafico();
-        }
-    };
+                                const porcentajeIngresos = total ? ((ingresosTotal / total) * 100).toFixed(2) : 0;
+                                const porcentajeEgresos = total ? ((egresosTotal / total) * 100).toFixed(2) : 0;
 
-    const actualizarGrafico = () => {
-        if (!usuarioActual) return;
+                                porceDiv.innerHTML = '';
+                                const barraIngresos = document.createElement('div');
+                                barraIngresos.style.backgroundColor = 'green';
+                                barraIngresos.style.width = `${porcentajeIngresos}%`;
+                                barraIngresos.textContent = `Ingresos: ${porcentajeIngresos}%`;
+                                porceDiv.appendChild(barraIngresos);
 
-        const porceDiv = document.querySelector('.porce');
-        let ingresosTotal = 0;
-        let egresosTotal = 0;
+                                const barraEgresos = document.createElement('div');
+                                barraEgresos.style.backgroundColor = 'red';
+                                barraEgresos.style.width = `${porcentajeEgresos}%`;
+                                barraEgresos.textContent = `Egresos: ${porcentajeEgresos}%`;
+                                porceDiv.appendChild(barraEgresos);
+                            });
+                    });
+            };
 
-        const ingresosData = JSON.parse(localStorage.getItem(`ingresos_${usuarioActual}`)) || [];
-        const egresosData = JSON.parse(localStorage.getItem(`egresos_${usuarioActual}`)) || [];
+            return {
+                init,
+                openTab,
+                agregarMonto
+            };
+        })();
 
-        ingresosTotal = ingresosData.reduce((total, monto) => total + parseFloat(monto), 0);
-        egresosTotal = egresosData.reduce((total, monto) => total + parseFloat(monto), 0);
-        const total = ingresosTotal + egresosTotal;
-
-        const porcentajeIngresos = total ? ((ingresosTotal / total) * 100).toFixed(2) : 0;
-        const porcentajeEgresos = total ? ((egresosTotal / total) * 100).toFixed(2) : 0;
-
-        porceDiv.innerHTML = '';
-        const barraIngresos = document.createElement('div');
-        barraIngresos.style.backgroundColor = 'green';
-        barraIngresos.style.width = `${porcentajeIngresos}%`;
-        barraIngresos.textContent = `Ingresos: ${porcentajeIngresos}%`;
-        porceDiv.appendChild(barraIngresos);
-
-        const barraEgresos = document.createElement('div');
-        barraEgresos.style.backgroundColor = 'red';
-        barraEgresos.style.width = `${porcentajeEgresos}%`;
-        barraEgresos.textContent = `Egresos: ${porcentajeEgresos}%`;
-        porceDiv.appendChild(barraEgresos);
-    };
-
-    return {
-        init,
-        openTab,
-        agregarMonto
-    };
-})();
-
-document.addEventListener('DOMContentLoaded', App.init);
+        document.addEventListener('DOMContentLoaded', App.init);
     </script>
 </body>
 </html>
