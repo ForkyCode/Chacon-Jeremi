@@ -1,0 +1,40 @@
+ CREATE DATABASE game_store;
+
+-- Usar la base de datos creada
+USE game_store;
+
+-- Crear tabla de usuarios
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL
+);
+
+-- Crear tabla de juegos
+CREATE TABLE games (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    image VARCHAR(255) NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    price DECIMAL(10, 2) NOT NULL
+);
+
+-- Crear tabla de códigos de juego
+CREATE TABLE game_codes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    game_id INT NOT NULL,
+    code VARCHAR(255) NOT NULL UNIQUE,
+    FOREIGN KEY (game_id) REFERENCES games(id) ON DELETE CASCADE
+);
+
+-- Crear tabla de compras
+CREATE TABLE purchases (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    game_id INT NOT NULL,
+    game_code_id INT NOT NULL,
+    purchase_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (game_id) REFERENCES games(id) ON DELETE CASCADE,
+    FOREIGN KEY (game_code_id) REFERENCES game_codes(id) ON DELETE CASCADE
+);
