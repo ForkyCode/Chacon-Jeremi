@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer</title>
+  <link rel="stylesheet" href="../estilos/customer.css">
+</head>
+<body>
+  <header>
+    <img src="../images/logo.png" alt="Logo" id="logo">
+    <h2>Bienvenido</h2>
+    <img src="../images/carrito.png" alt="Carrito de compras" id="carrito">
+    <img src="../images/hamburguesa.png" alt="Menú" id="menu">
+
+    <!-- Menú desplegable -->
+    <div id="menuDropdown">
+      <a href="./index.html">Iniciar sesión</a>
+      <a href="./registro.html">Registrarse</a>
+      <hr>
+      <a href="#" id="logoutLink">Cerrar sesión</a>
+    </div>
+  </header>
+
+  <main>
+    <h1>Recomendado para ti!</h1>
+
+    <div id="gameCards"></div>
+
+    <!-- Contenedor del carrito de compras -->
+    <div id="cartContainer" class="hidden">
+      <button id="closeCartBtn" class="close-btn">X</button>
+      <h2>Carrito de Compras</h2>
+      <!-- Lista de ítems del carrito -->
+      <ul id="cartList"></ul>
+    </div>
+  </main>
+
+  <script type="module" src="../scripts/main.js"></script> 
+  <script type="module" src="../scripts/customer.js"></script>
+</body>
+</html>

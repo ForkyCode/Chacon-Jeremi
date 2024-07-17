@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil</title>
+    <link rel="stylesheet" href="perfil.css">
+</head>
+<body>
+
+    <header>
+        <h2 id="welcomeMessage"></h2>
+        <div>
+            <a id="profileLink" href="tabla.html">Tablas</a>
+            <img id="logoutIcon" src="logout.png" alt="Logout">
+        </div>
+    </header>
+
+    <div class="profile-box">
+        <h2>Perfil de Usuario</h2>
+        <div class="profile-image">
+            <img id="profileImage" src="default-profile.png" alt="Foto de perfil">
+            <input type="file" id="imageInput" accept="image/*">
+        </div>
+        <div class="profile-info">
+            <p><strong>Nombre:</strong> <span id="nombreUsuario"></span></p>
+            <p><strong>Username:</strong> <span id="usernameUsuario"></span>
+                <button id="editUsernameBtn">Editar</button>
+            </p>
+            <p><strong>Contraseña:</strong> <span id="contrasenaUsuario">********</span>
+                <button id="editPasswordBtn">Editar</button>
+            </p>
+        </div>
+        <button id="saveBtn">Guardar</button>
+    </div>
+
+    <script>
+const HashModule = (function() {
+    function hashCode(str) {
+        let hash = 0;
+        for (let i = 0, len = str.length; i < len; i++) {
+            let chr = str.charCodeAt(i);
+            hash = (hash << 5) - hash + chr;
+            hash |= 0;
+        }
+        return hash;
+    }
+    return {
+        hashCode: hashCode
+    };
+})();
+
+const UserModule = (function(HashModule) {
+    let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+    let usuarioActual = localStorage.getItem('usuarioActual');
+    let usuario = null;
+
+    function getUsuarioActual() {
+        if (usuarioActual) {
+            usuario = usuarios.find(user => user.username === usuarioActual);
+            if (!usuario) {
+                redirectToLogin();
+            }
+        } else {
+            redirectToLogin();
+        }
+        return usuario;
+    }
+
+    function redirectToLogin() {
+        window.location.href = 'login.html';
+    }
+
+    function logout() {
+        localStorage.removeItem('usuarioActual');
+        redirectToLogin();
+    }
+
+    function updateUsername(newUsername) {
+        if (newUsername) {
+            usuario.username = newUsername;
+            localStorage.setItem('usuarioActual', newUsername);
+        }
+    }
+
+    function updatePassword(newPassword) {
+        if (newPassword) {
+            usuario.contrasena = HashModule.hashCode(newPassword).toString();
+        }
+    }
+
+    function updateImage(imageData) {
+        usuario.imagen = imageData;
+    }
+
+    function saveChanges() {
+        const usuarioIndex = usuarios.findIndex(user => user.username === usuarioActual);
+        if (usuarioIndex > -1) {
+            usuarios[usuarioIndex] = usuario;
+        } else {
+            const usuarioIndexNuevo = usuarios.findIndex(user => user.username === usuario.username);
+            if (usuarioIndexNuevo > -1) {
+                usuarios[usuarioIndexNuevo] = usuario;
+                localStorage.setItem('usuarioActual', usuario.username);
+            }
+        }
+        localStorage.setItem('usuarios', JSON.stringify(usuarios));
+    }
+
+    return {
+        getUsuarioActual: getUsuarioActual,
+        logout: logout,
+        updateUsername: updateUsername,
+        updatePassword: updatePassword,
+        updateImage: updateImage,
+        saveChanges: saveChanges
+    };
+})(HashModule);
+
+const DOMModule = (function(UserModule) {
+    function init() {
+        const usuario = UserModule.getUsuarioActual();
+        if (usuario) {
+            document.getElementById('welcomeMessage').textContent = `Bienvenido ${usuario.nombre}`;
+            document.getElementById('nombreUsuario').textContent = usuario.nombre;
+            document.getElementById('usernameUsuario').textContent = usuario.username;
+            if (usuario.imagen) {
+                document.getElementById('profileImage').src = usuario.imagen;
+            }
+        }
+
+        document.getElementById('logoutIcon').addEventListener('click', UserModule.logout);
+        document.getElementById('editUsernameBtn').addEventListener('click', editUsername);
+        document.getElementById('editPasswordBtn').addEventListener('click', editPassword);
+        document.getElementById('imageInput').addEventListener('change', handleImageChange);
+        document.getElementById('saveBtn').addEventListener('click', UserModule.saveChanges);
+    }
+
+    function editUsername() {
+        const newUsername = prompt('Ingrese el nuevo nombre de usuario:', document.getElementById('usernameUsuario').textContent);
+        if (newUsername) {
+            UserModule.updateUsername(newUsername);
+            document.getElementById('usernameUsuario').textContent = newUsername;
+        }
+    }
+
+    function editPassword() {
+        const newPassword = prompt('Ingrese la nueva contraseña:');
+        if (newPassword) {
+            UserModule.updatePassword(newPassword);
+            alert('Contraseña actualizada exitosamente.');
+        }
+    }
+
+    function handleImageChange(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('profileImage').src = e.target.result;
+                UserModule.updateImage(e.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    return {
+        init: init
+    };
+})(UserModule);
+
+document.addEventListener('DOMContentLoaded', DOMModule.init);
+
+    </script>
+</body>
+</html>

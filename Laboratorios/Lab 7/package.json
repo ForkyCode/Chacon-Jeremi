@@ -1,0 +1,21 @@
+{
+  "name": "lab-7",
+  "version": "1.0.0",
+  "description": "proyecto bun array fibo",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "bun app.js"
+  },
+  "author": "jeremi",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

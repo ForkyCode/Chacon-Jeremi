@@ -1,0 +1,213 @@
+/* Mobile first */
+body {
+    background-color: #3A0088;
+    color: white;
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+p {
+    font-family: sans-serif;
+}
+
+h1 {
+    margin-top: 40px;
+    margin-left: 20px;
+}
+
+header {
+    background-color: #FF4500;
+    color: white;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px;
+}
+
+#logo {
+    width: 200px;
+    border-radius: 10px;
+}
+
+.header-icons {
+    display: flex;
+    align-items: center;
+}
+
+.header-icons img {
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+#gameCards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.gameCard {
+    background-color: #5033a0;
+    padding: 1rem;
+    border-radius: 10px;
+    text-align: left;
+    color: white;
+    width: 230px;
+    height: 270px;
+    margin: 20px auto;
+    box-shadow: 0 0 10px #92C5FC;
+    position: relative;
+}
+
+.gameCard .game-img {
+    width: 100%;
+    height: 160px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #92C5FC;
+}
+
+.cart-icon {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}
+
+#cartContainer {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 2rem;
+    border-radius: 10px;
+    z-index: 10;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    color: black; /* Establece el color del texto a negro */
+    width: 400px; /* Alarga la pantalla del carrito */
+}
+
+.hidden {
+    display: none;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.delete-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#addGameBtn {
+    display: none;
+}
+
+#menuDropdown {
+    display: none;
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    background-color: #FF4500;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.6);
+    z-index: 1000;
+}
+
+#menuDropdown a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: white;
+}
+
+#menuDropdown hr {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    margin: 5px 0;
+}
+
+#carrito {
+    width: 30px;
+    cursor: pointer;
+    margin-left: 20px;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.cart-item-img {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    border-radius: 5px;
+}
+
+#totalPrice {
+    font-weight: bold;
+    margin-top: 20px;
+    text-align: right;
+}
+
+/* Botón de comprar */
+#buyButton {
+    background-color: #5033a0;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    float: right; /* Mueve el botón a la derecha */
+}
+
+@media (min-width: 764px) {
+    #gameCards {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    #gameCards {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (min-width: 1200px) {
+    #gameCards {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+

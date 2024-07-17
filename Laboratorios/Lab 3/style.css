@@ -1,0 +1,67 @@
+/* Mobile first */
+body{
+    font-family: "Roboto", sans-serif;
+    padding: 1rem;
+}
+
+p, h1, h2, h3, h4, h5, h6{
+    margin: 0;
+    text-align: center;
+}
+
+.titulo{
+    color: red;
+    font-weight: 700;
+}
+
+/* Para mis Div */
+.container-box{
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.box{
+    width: 100%;
+    min-height: 200px;
+    border-radius: 8px;
+    -webkit-box-shadow: 0px 4px 14px 0px rgba(0,0,0,0.30);
+    -moz-box-shadow: 0px 4px 14px 0px rgba(0,0,0,0.30);
+    box-shadow: 0px 4px 14px 0px rgba(0,0,0,0.30);
+    padding: 1rem;
+}
+
+/* style para la tabla html */
+table {
+    border-collapse: collapse;
+    width: 50%;
+    margin: auto;
+}
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+}
+th {
+    background-color: #f2f2f2;
+}
+
+
+/* Tablet */
+@media (min-width: 764px){
+    .box{
+        width: 350px;
+    }
+}
+
+
+/* Desktop */
+@media (min-width: 1024px){
+
+}
+
+/* Desktop lg*/
+@media (min-width: 1200px){
+
+}

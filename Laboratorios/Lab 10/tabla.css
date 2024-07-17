@@ -1,0 +1,183 @@
+/* Mobile first */
+body {
+    font-family: Arial, sans-serif;
+}
+
+header {
+    background-color: #6a5acd;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Centramos los elementos verticalmente */
+    padding: 20px 30px; /* Aumentamos el padding */
+    line-height: 25px; /* Ajustamos la altura de línea para centrar verticalmente */
+    border-radius: 5px;
+}
+
+#welcomeMessage {
+    margin: 0;
+}
+
+#profileLink {
+    color: white;
+    text-decoration: none;
+    margin-right: 40px; /* Aumentamos el margen */
+    font-size: 18px; /* Aumentamos el tamaño de la fuente */
+}
+
+#profileLink:hover {
+    color: grey;
+}
+
+#logoutIcon {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    vertical-align: middle; /* Alineamos verticalmente al centro */
+    margin-right: 2cqb;
+}
+
+#logoutIcon:hover {
+    filter: brightness(0.7); /* Reduce el brillo para dar efecto de hover */
+}
+
+p, h1, h3, h4, h5, h6 {
+    margin: 0;
+    text-align: center;
+}
+
+.titulo {
+    color: #6a5acd;
+    font-weight: 700;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+/* Para mi Div de ingresar monto */
+.agregar-monto {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: center;
+    gap: 16px;
+}
+
+.box {
+    background-color: #DAC5C5;
+    width: 100%;
+    min-width: 300px;
+    min-height: 200px;
+    border-radius: 8px;
+    -webkit-box-shadow: 0px 4px 14px 0px rgba(0,0,0,0.30);
+    -moz-box-shadow: 0px 4px 14px 0px rgba(0,0,0,0.30);
+    box-shadow: 0px 4px 14px 0px rgba(0,0,0,0.30);
+    display: flex;
+    padding: 2rem;
+    flex-direction: column;
+    align-items: center;
+}
+
+.box h2 {
+    margin-bottom: 10px;
+}
+
+.box input {
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+    border: none;
+    border-radius: 10px;
+    padding: 5px 20px;
+}
+
+.box button {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.30);
+    background-color: #6a5acd;
+    color: whitesmoke;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 50px;
+}
+
+/* Para Divs de ingreso y egreso */
+.listas {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.listing.ingresos,
+.listing.egresos {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.listing.ingresos th,
+.listing.ingresos td,
+.listing.egresos th,
+.listing.egresos td {
+    border: 1px solid #6a5acd;
+    padding: 8px;
+    text-align: center;
+}
+
+.listing.ingresos th,
+.listing.egresos th {
+    background-color: #6a5acd;
+    color: white;
+}
+
+.listing.ingresos td,
+.listing.egresos td {
+    background-color: #DAC5C5;
+}
+
+
+/* Para los tabs */
+.tab {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.tab button {
+    background-color: #6a5acd;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.tab button.active {
+    background-color: #483d8b;
+}
+
+.tabcontent {
+    display: none;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+}
+
+.content h2 {
+    margin-left: 15px;
+}
+
+/* Tablet */
+@media (min-width: 764px) {
+    .box {
+        width: 350px;
+    }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+}
+
+/* Desktop lg */
+@media (min-width: 1200px) {
+}

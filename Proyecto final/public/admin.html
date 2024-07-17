@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administrador</title>
+  <link rel="stylesheet" href="../estilos/admin.css">
+</head>
+<body>
+  <header>
+    <img src="../images/logo.png" alt="Logo" id="logo">
+    <h2>Bienvenido Admin</h2>
+    <img src="../images/hamburguesa.png" alt="Menú" id="menu" onclick="toggleMenu()">
+
+    <!-- Menú desplegable -->
+    <div id="menuDropdown">
+      <a href="./index.html">Iniciar sesión</a>
+      <a href="./registro.html">Registrarse</a>
+      <hr>
+      <a href="#" id="logoutLink">Cerrar sesión</a>
+    </div>
+  </header>
+
+  <main>
+    <h1>Recomendado para ti!</h1>
+
+    <div id="gameCards"></div>
+
+    <div id="formContainer" class="hidden">
+      <button id="closeFormBtn" class="close-btn">X</button>
+      <h2>Agregar Juego</h2>
+      <form id="gameForm">
+        <input type="file" id="gameImage" accept="image/*">
+        <input type="text" id="gameTitle" placeholder="Título del juego">
+        <input type="number" id="gamePrice" placeholder="Precio">
+        <button type="submit">Añadir</button>
+      </form>
+    </div>
+    <button id="addGameBtn">Agregar juego</button>
+  </main>
+
+  <script type="module">
+    import { toggleMenu, logout } from '../scripts/main.js';
+
+    // Asigna la función toggleMenu al evento onclick del menú
+    document.getElementById('menu').onclick = toggleMenu;
+    document.getElementById('logoutLink').onclick = logout;
+  </script>
+</body>
+</html>

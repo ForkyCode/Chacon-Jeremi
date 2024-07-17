@@ -1,0 +1,171 @@
+body {
+  background-color: #3A0088; /* Color de fondo */
+  color: white;
+  font-family: sans-serif;
+}
+
+p {
+  font-family: sans-serif;
+}
+
+h1 {
+  margin-top: 40px;
+  margin-left: 20px;
+}
+
+header {
+  background-color: #FF4500; /* Color del header */
+  color: white;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 10px;
+}
+
+#logo {
+  width: 200px; /* Ajusta el tamaño del logo */
+  border-radius: 10px;
+}
+
+#gameCards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 50px; /* Aumenta el margen superior a 80px */
+}
+
+.gameCard {
+  background-color: #5033a0;
+  padding: 1rem; /* Reduce el padding para hacer más pequeño el div */
+  border-radius: 10px;
+  text-align: left; /* Alinea el texto a la izquierda */
+  color: white;
+  width: 230px;
+  height: 270px; /* Reduce la altura del div para ajustar el tamaño general */
+  margin: 20px auto; /* Añade un margen de 20px arriba y abajo, y auto para centrar */
+  box-shadow: 0 0 10px #92C5FC;
+  position: relative; /* Posición relativa para colocar la X */
+}
+
+.gameCard img {
+  width: 100%;
+  height: 160px; /* Altura de la imagen */
+  border-radius: 10px;
+  box-shadow: 0 0 10px #92C5FC; /* Agrega sombra fluorescente a la imagen */
+}
+
+#formContainer {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 2rem;
+  border-radius: 10px;
+  z-index: 10;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.hidden {
+  display: none;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* Nueva clase para el botón de eliminar en las tarjetas */
+.delete-btn {
+  position: absolute;
+  bottom: 10px; /* Posiciona el botón en la parte inferior */
+  right: 10px; /* Posiciona el botón a la derecha */
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* Estilo del botón de añadir juego */
+#addGameBtn {
+  display: block;
+  margin: 2rem auto; /* Centra el botón horizontalmente y agrega un margen superior e inferior */
+  padding: 1rem 2rem; /* Agrega relleno al botón */
+  background-color: #FF4500; /* Color de fondo del botón */
+  color: white; /* Color del texto del botón */
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(255, 255, 255, 0.5); /* Sombra blanca fina */
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+/* Hover y focus en el botón */
+#addGameBtn:hover,
+#addGameBtn:focus {
+  background-color: #e03e00; /* Color de fondo al pasar el cursor o enfocar */
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.7); /* Sombra blanca más intensa */
+}
+
+/* Estilos adicionales para el menú desplegable */
+#menuDropdown {
+  display: none;
+  position: absolute;
+  top: 60px; /* Ajusta la posición del menú según el header */
+  right: 20px; /* Ajusta la posición del menú según el header */
+  background-color: #FF4500; /* Color de fondo del menú */
+  color: white; /* Color del texto del menú */
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.6); /* Sombra del menú */
+  z-index: 1000; /* Asegura que esté por encima de otros elementos */
+}
+
+#menuDropdown a {
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+  color: white; /* Color del texto de los enlaces */
+}
+
+#menuDropdown hr {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.3); /* Línea separadora */
+  margin: 5px 0;
+}
+
+/* Tablet */
+@media (min-width: 764px) {
+  #gameCards {
+    grid-template-columns: repeat(3, 1fr); 
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  #gameCards {
+    grid-template-columns: repeat(4, 1fr); 
+  }
+}
+
+/* Desktop lg */
+@media (min-width: 1200px) {
+  #gameCards {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
